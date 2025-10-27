@@ -4,9 +4,9 @@ import { ReactNode } from "react";
 
 export default function DashboardLayout({ children }: { children: ReactNode }) {
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen">
       {/* Dashboard Header with Navigation */}
-      <header className="border-b bg-white sticky top-0 z-50">
+      <header className="border-b bg-[#F4F7F9] sticky top-0 z-50">
         <div className="flex items-center justify-between container mx-auto px-6">
           <DashboardNav />
           <DashboardHeader />

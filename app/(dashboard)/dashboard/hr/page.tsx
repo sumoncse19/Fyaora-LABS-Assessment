@@ -132,7 +132,7 @@ export default function HumanResourcesPage() {
           <div className="flex items-center gap-4">
             <button
               onClick={() => setActiveTab("providers")}
-              className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+              className={`px-4 py-2 rounded-lg font-medium transition-colors cursor-pointer ${
                 activeTab === "providers"
                   ? "bg-gray-200 text-gray-900"
                   : "bg-white text-gray-600 hover:bg-gray-100"
@@ -140,9 +140,10 @@ export default function HumanResourcesPage() {
             >
               Service Providers
             </button>
+
             <button
               onClick={() => setActiveTab("customers")}
-              className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+              className={`px-4 py-2 rounded-lg font-medium transition-colors cursor-pointer ${
                 activeTab === "customers"
                   ? "bg-gray-200 text-gray-900"
                   : "bg-white text-gray-600 hover:bg-gray-100"
