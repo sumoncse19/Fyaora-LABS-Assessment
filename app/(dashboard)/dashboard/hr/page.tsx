@@ -1,73 +1,180 @@
-import { StatCard } from "@/components/ui/stat-card";
-import { HRMetrics } from "@/types";
+"use client";
 
-async function getHRMetrics(): Promise<HRMetrics> {
-  return {
-    totalEmployees: 142,
-    newHires: 8,
-    openPositions: 5,
-  };
-}
+import { useState, useMemo, useEffect } from "react";
+import { Search } from "lucide-react";
+import { WaitlistFilters } from "@/components/waitlist/waitlist-filters";
+import { WaitlistTable } from "@/components/waitlist/waitlist-table";
+import { Input } from "@/components/ui/input";
+import { ServiceProvider, FilterOptions } from "@/types";
+import { getAllWaitlistData } from "@/lib/api/waitlist";
 
-export default async function HumanResourcesPage() {
-  const metrics = await getHRMetrics();
+export default function HumanResourcesPage() {
+  const [activeTab, setActiveTab] = useState<"providers" | "customers">(
+    "providers"
+  );
+  const [searchQuery, setSearchQuery] = useState("");
+  const [filters, setFilters] = useState<FilterOptions>({
+    postcode: "",
+    registrationStatus: [],
+    dateRange: { start: "", end: "" },
+    vendorType: [],
+    serviceOffering: [],
+  });
+  const [isLoading, setIsLoading] = useState(true);
+  const [providersData, setProvidersData] = useState<ServiceProvider[]>([]);
+  const [customersData, setCustomersData] = useState<ServiceProvider[]>([]);
+
+  // Fetch data on component mount (simulating API call)
+  useEffect(() => {
+    const fetchData = async () => {
+      setIsLoading(true);
+      try {
+        const data = await getAllWaitlistData();
+        setProvidersData(data.serviceProviders);
+        setCustomersData(data.customers);
+      } catch (error) {
+        console.error("Error fetching waitlist data:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  // Get current tab data
+  const allData = useMemo(
+    () => (activeTab === "providers" ? providersData : customersData),
+    [activeTab, providersData, customersData]
+  );
+
+  const filteredData = useMemo(() => {
+    let data = allData;
+
+    // Apply search filter
+    if (searchQuery) {
+      data = data.filter(
+        (item) =>
+          item.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          item.phoneNumber.includes(searchQuery) ||
+          item.postcode.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+    }
+
+    // Apply postcode filter
+    if (filters.postcode) {
+      data = data.filter((item) =>
+        item.postcode.toLowerCase().includes(filters.postcode.toLowerCase())
+      );
+    }
+
+    // Apply registration status filter
+    if (filters.registrationStatus.length > 0) {
+      data = data.filter((item) =>
+        filters.registrationStatus.includes(item.status)
+      );
+    }
+
+    // Apply vendor type filter
+    if (filters.vendorType.length > 0) {
+      data = data.filter((item) =>
+        filters.vendorType.includes(item.vendorType)
+      );
+    }
+
+    // Apply service offering filter
+    if (filters.serviceOffering.length > 0) {
+      data = data.filter((item) =>
+        filters.serviceOffering.includes(item.serviceOffering)
+      );
+    }
+
+    // Apply date range filter
+    if (filters.dateRange.start || filters.dateRange.end) {
+      data = data.filter((item) => {
+        const itemDate = new Date(
+          item.signupDate.split("/").reverse().join("-")
+        );
+        const startDate = filters.dateRange.start
+          ? new Date(filters.dateRange.start)
+          : null;
+        const endDate = filters.dateRange.end
+          ? new Date(filters.dateRange.end)
+          : null;
+
+        if (startDate && itemDate < startDate) return false;
+        if (endDate && itemDate > endDate) return false;
+        return true;
+      });
+    }
+
+    return data;
+  }, [allData, searchQuery, filters]);
 
   return (
     <div>
+      {/* Header */}
       <div className="mb-6">
-        <h1 className="text-3xl font-bold text-gray-900">Human Resources</h1>
-        <p className="text-gray-600 mt-2">
-          Employee management and HR operations
-        </p>
+        <h1 className="text-3xl font-bold text-gray-900 mb-2">Waitlist</h1>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-        <StatCard
-          title="Total Employees"
-          value={metrics.totalEmployees}
-          description="Active team members"
-          valueColor="text-purple-600"
-          bgColor="bg-purple-50"
-        />
-        <StatCard
-          title="New Hires (Month)"
-          value={metrics.newHires}
-          description="Recent additions"
-          valueColor="text-yellow-600"
-          bgColor="bg-yellow-50"
-        />
-        <StatCard
-          title="Open Positions"
-          value={metrics.openPositions}
-          description="Currently hiring"
-          valueColor="text-indigo-600"
-          bgColor="bg-indigo-50"
-        />
-      </div>
+      {/* Layout: Sidebar + Content */}
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+        {/* Left Sidebar - Filters */}
+        <div className="lg:col-span-1">
+          <WaitlistFilters onFilterChange={setFilters} />
+        </div>
 
-      <div className="bg-white p-6 rounded-lg shadow-sm border">
-        <h2 className="text-xl font-semibold text-gray-900 mb-4">
-          Department Distribution
-        </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {[
-            { name: "Engineering", count: 45, color: "bg-blue-500" },
-            { name: "Sales & Marketing", count: 32, color: "bg-green-500" },
-            { name: "Operations", count: 28, color: "bg-yellow-500" },
-            { name: "Support", count: 22, color: "bg-purple-500" },
-            { name: "HR & Admin", count: 15, color: "bg-pink-500" },
-          ].map((dept, index) => (
-            <div
-              key={index}
-              className="flex items-center justify-between p-4 border rounded-lg"
+        {/* Right Content - Table */}
+        <div className="lg:col-span-3 space-y-6">
+          <h3 className="text-[#12153A] text-4xl">Waitlist</h3>
+          {/* Tabs */}
+          <div className="flex items-center gap-4">
+            <button
+              onClick={() => setActiveTab("providers")}
+              className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+                activeTab === "providers"
+                  ? "bg-gray-200 text-gray-900"
+                  : "bg-white text-gray-600 hover:bg-gray-100"
+              }`}
             >
-              <div className="flex items-center gap-3">
-                <div className={`w-3 h-3 rounded-full ${dept.color}`} />
-                <span className="font-medium text-gray-900">{dept.name}</span>
+              Service Providers
+            </button>
+            <button
+              onClick={() => setActiveTab("customers")}
+              className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+                activeTab === "customers"
+                  ? "bg-gray-200 text-gray-900"
+                  : "bg-white text-gray-600 hover:bg-gray-100"
+              }`}
+            >
+              Customers
+            </button>
+
+            {/* Search Bar */}
+            <div className="ml-auto flex-1 max-w-md">
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                <Input
+                  type="text"
+                  placeholder="Search User"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="pl-10 bg-white"
+                />
               </div>
-              <span className="text-gray-600 font-semibold">{dept.count}</span>
             </div>
-          ))}
+          </div>
+
+          {/* Table */}
+          {isLoading ? (
+            <div className="bg-white rounded-lg border p-12 text-center">
+              <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-blue-600 border-r-transparent"></div>
+              <p className="mt-4 text-gray-600">Loading waitlist data...</p>
+            </div>
+          ) : (
+            <WaitlistTable data={filteredData} />
+          )}
         </div>
       </div>
     </div>

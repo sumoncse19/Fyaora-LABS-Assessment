@@ -36,3 +36,29 @@ export interface ComplianceItem {
   name: string;
   status: ComplianceStatus;
 }
+
+export type RegistrationStatus = "onboarded" | "rejected" | "pending";
+export type VendorType = "independent" | "company";
+export type ServiceOffering = "housekeeping" | "window-cleaning" | "car-valet";
+
+export interface ServiceProvider {
+  id: string;
+  email: string;
+  phoneNumber: string;
+  postcode: string;
+  vendorType: VendorType;
+  serviceOffering: ServiceOffering;
+  signupDate: string;
+  status: RegistrationStatus;
+}
+
+export interface FilterOptions {
+  postcode: string;
+  registrationStatus: RegistrationStatus[];
+  dateRange: {
+    start: string;
+    end: string;
+  };
+  vendorType: VendorType[];
+  serviceOffering: ServiceOffering[];
+}

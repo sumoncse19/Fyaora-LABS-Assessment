@@ -1,0 +1,176 @@
+{
+  "serviceProviders": [
+    {
+      "id": "1",
+      "email": "jonesadam@gmail.com",
+      "phoneNumber": "+44 20 7946 0958",
+      "postcode": "SW1A 1AA",
+      "vendorType": "independent",
+      "serviceOffering": "housekeeping",
+      "signupDate": "01/05/2024",
+      "status": "onboarded"
+    },
+    {
+      "id": "2",
+      "email": "Gler@opp.com",
+      "phoneNumber": "+44 20 7946 0958",
+      "postcode": "M1 1AE",
+      "vendorType": "company",
+      "serviceOffering": "window-cleaning",
+      "signupDate": "21/03/2025",
+      "status": "onboarded"
+    },
+    {
+      "id": "3",
+      "email": "Albertwatson@gmail.com",
+      "phoneNumber": "+44 20 7946 0958",
+      "postcode": "OX1 2JD",
+      "vendorType": "independent",
+      "serviceOffering": "housekeeping",
+      "signupDate": "11/10/2023",
+      "status": "rejected"
+    },
+    {
+      "id": "4",
+      "email": "Gler@opp.com",
+      "phoneNumber": "+44 20 7946 0958",
+      "postcode": "M1 1AE",
+      "vendorType": "company",
+      "serviceOffering": "window-cleaning",
+      "signupDate": "21/03/2025",
+      "status": "onboarded"
+    },
+    {
+      "id": "5",
+      "email": "jonesadam@gmail.com",
+      "phoneNumber": "+44 20 7946 0958",
+      "postcode": "SW1A 1AA",
+      "vendorType": "independent",
+      "serviceOffering": "housekeeping",
+      "signupDate": "01/05/2024",
+      "status": "onboarded"
+    },
+    {
+      "id": "6",
+      "email": "sarah.miller@example.com",
+      "phoneNumber": "+44 20 7946 0958",
+      "postcode": "B1 1AA",
+      "vendorType": "company",
+      "serviceOffering": "car-valet",
+      "signupDate": "15/08/2024",
+      "status": "onboarded"
+    },
+    {
+      "id": "7",
+      "email": "michael.brown@gmail.com",
+      "phoneNumber": "+44 20 7946 0958",
+      "postcode": "SW1A 1AA",
+      "vendorType": "independent",
+      "serviceOffering": "housekeeping",
+      "signupDate": "01/05/2024",
+      "status": "pending"
+    },
+    {
+      "id": "8",
+      "email": "emma.wilson@opp.com",
+      "phoneNumber": "+44 20 7946 0958",
+      "postcode": "M1 1AE",
+      "vendorType": "company",
+      "serviceOffering": "window-cleaning",
+      "signupDate": "21/03/2025",
+      "status": "onboarded"
+    },
+    {
+      "id": "9",
+      "email": "james.taylor@gmail.com",
+      "phoneNumber": "+44 20 7946 0958",
+      "postcode": "SW1A 1AA",
+      "vendorType": "independent",
+      "serviceOffering": "car-valet",
+      "signupDate": "12/06/2024",
+      "status": "onboarded"
+    },
+    {
+      "id": "10",
+      "email": "olivia.davis@opp.com",
+      "phoneNumber": "+44 20 7946 0958",
+      "postcode": "M1 1AE",
+      "vendorType": "company",
+      "serviceOffering": "window-cleaning",
+      "signupDate": "21/03/2025",
+      "status": "rejected"
+    },
+    {
+      "id": "11",
+      "email": "william.moore@gmail.com",
+      "phoneNumber": "+44 20 7946 0958",
+      "postcode": "OX1 2JD",
+      "vendorType": "independent",
+      "serviceOffering": "housekeeping",
+      "signupDate": "05/09/2024",
+      "status": "onboarded"
+    },
+    {
+      "id": "12",
+      "email": "sophia.martin@example.com",
+      "phoneNumber": "+44 20 7946 0958",
+      "postcode": "B1 1AA",
+      "vendorType": "company",
+      "serviceOffering": "car-valet",
+      "signupDate": "18/07/2024",
+      "status": "onboarded"
+    }
+  ],
+  "customers": [
+    {
+      "id": "c1",
+      "email": "customer1@example.com",
+      "phoneNumber": "+44 20 7946 1234",
+      "postcode": "SW1A 2AA",
+      "vendorType": "independent",
+      "serviceOffering": "housekeeping",
+      "signupDate": "10/01/2024",
+      "status": "onboarded"
+    },
+    {
+      "id": "c2",
+      "email": "customer2@example.com",
+      "phoneNumber": "+44 20 7946 5678",
+      "postcode": "M1 2AE",
+      "vendorType": "company",
+      "serviceOffering": "window-cleaning",
+      "signupDate": "15/02/2024",
+      "status": "onboarded"
+    },
+    {
+      "id": "c3",
+      "email": "customer3@example.com",
+      "phoneNumber": "+44 20 7946 9012",
+      "postcode": "OX1 3JD",
+      "vendorType": "independent",
+      "serviceOffering": "car-valet",
+      "signupDate": "20/03/2024",
+      "status": "pending"
+    },
+    {
+      "id": "c4",
+      "email": "customer4@example.com",
+      "phoneNumber": "+44 20 7946 3456",
+      "postcode": "B1 2AA",
+      "vendorType": "company",
+      "serviceOffering": "housekeeping",
+      "signupDate": "25/04/2024",
+      "status": "onboarded"
+    },
+    {
+      "id": "c5",
+      "email": "customer5@example.com",
+      "phoneNumber": "+44 20 7946 7890",
+      "postcode": "SW1A 3AA",
+      "vendorType": "independent",
+      "serviceOffering": "window-cleaning",
+      "signupDate": "30/05/2024",
+      "status": "rejected"
+    }
+  ]
+}
