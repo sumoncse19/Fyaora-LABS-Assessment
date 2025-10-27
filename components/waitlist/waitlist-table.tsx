@@ -24,7 +24,12 @@ export function WaitlistTable({ data }: WaitlistTableProps) {
   const itemsPerPage = 10;
 
   const totalPages = Math.ceil(data.length / itemsPerPage);
-  const startIndex = (currentPage - 1) * itemsPerPage;
+
+  // Ensure current page is valid - if it exceeds total pages, use page 1
+  const activePage =
+    currentPage > totalPages && totalPages > 0 ? 1 : currentPage;
+
+  const startIndex = (activePage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
   const currentData = data.slice(startIndex, endIndex);
 
@@ -145,8 +150,8 @@ export function WaitlistTable({ data }: WaitlistTableProps) {
       {/* Pagination */}
       <div className="flex items-center justify-center gap-2 p-4 border-t">
         <button
-          onClick={() => setCurrentPage(Math.max(currentPage - 1, 1))}
-          disabled={currentPage === 1}
+          onClick={() => setCurrentPage(Math.max(activePage - 1, 1))}
+          disabled={activePage === 1}
           className="w-8 h-8 rounded bg-white border hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
         >
           &lt;
@@ -156,12 +161,12 @@ export function WaitlistTable({ data }: WaitlistTableProps) {
           let pageNumber;
           if (totalPages <= 5) {
             pageNumber = i + 1;
-          } else if (currentPage <= 3) {
+          } else if (activePage <= 3) {
             pageNumber = i + 1;
-          } else if (currentPage >= totalPages - 2) {
+          } else if (activePage >= totalPages - 2) {
             pageNumber = totalPages - 4 + i;
           } else {
-            pageNumber = currentPage - 2 + i;
+            pageNumber = activePage - 2 + i;
           }
 
           return (
@@ -169,7 +174,7 @@ export function WaitlistTable({ data }: WaitlistTableProps) {
               key={pageNumber}
               onClick={() => setCurrentPage(pageNumber)}
               className={`w-8 h-8 rounded ${
-                currentPage === pageNumber
+                activePage === pageNumber
                   ? "bg-blue-600 text-white"
                   : "bg-white border hover:bg-gray-50"
               }`}
@@ -180,8 +185,8 @@ export function WaitlistTable({ data }: WaitlistTableProps) {
         })}
 
         <button
-          onClick={() => setCurrentPage(Math.min(currentPage + 1, totalPages))}
-          disabled={currentPage === totalPages}
+          onClick={() => setCurrentPage(Math.min(activePage + 1, totalPages))}
+          disabled={activePage === totalPages}
           className="w-8 h-8 rounded bg-white border hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
         >
           &gt;
