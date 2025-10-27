@@ -113,11 +113,6 @@ export default function HumanResourcesPage() {
 
   return (
     <div>
-      {/* Header */}
-      <div className="mb-6">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">Waitlist</h1>
-      </div>
-
       {/* Layout: Sidebar + Content */}
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
         {/* Left Sidebar - Filters */}

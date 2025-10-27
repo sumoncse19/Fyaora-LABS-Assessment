@@ -88,7 +88,7 @@ export function WaitlistFilters({ onFilterChange }: WaitlistFiltersProps) {
   };
 
   return (
-    <div className="bg-[#F4F7F9] p-6 rounded-lg space-y-6 h-fit sticky top-6">
+    <div className="bg-[#F4F7F9] p-6 rounded-lg space-y-[46px] h-fit sticky top-6">
       {/* Gler logo */}
       <Image
         src="/gler.svg"
@@ -117,7 +117,7 @@ export function WaitlistFilters({ onFilterChange }: WaitlistFiltersProps) {
       {/* Registration Status */}
       <div className="text-[#324054]">
         <label className="font-bold">Registration Status</label>
-        <div className="space-y-2 mt-3">
+        <div className="space-y-3 mt-3">
           <Checkbox
             id="onboarded"
             label="Onboarded"
@@ -136,7 +136,7 @@ export function WaitlistFilters({ onFilterChange }: WaitlistFiltersProps) {
       {/* Date Registered */}
       <div className="text-[#324054]">
         <label className="font-bold">Date Registered</label>
-        <div className="space-y-2 mt-3">
+        <div className="mt-3 flex gap-1 items-center">
           <DatePicker
             value={
               filters.dateRange.start
@@ -146,7 +146,7 @@ export function WaitlistFilters({ onFilterChange }: WaitlistFiltersProps) {
             onChange={(date: Date | undefined) =>
               handleDateChange("start", date)
             }
-            placeholder="MM/DD/YYYY"
+            placeholder="Start"
           />
           <DatePicker
             value={
@@ -155,7 +155,7 @@ export function WaitlistFilters({ onFilterChange }: WaitlistFiltersProps) {
                 : undefined
             }
             onChange={(date: Date | undefined) => handleDateChange("end", date)}
-            placeholder="MM/DD/YYYY"
+            placeholder="End"
           />
         </div>
       </div>
@@ -163,7 +163,7 @@ export function WaitlistFilters({ onFilterChange }: WaitlistFiltersProps) {
       {/* Vendor Type */}
       <div className="text-[#324054]">
         <label className="font-bold">Vendor Type</label>
-        <div className="space-y-2 mt-3">
+        <div className="space-y-3 mt-3">
           <Checkbox
             id="independent"
             label="Independent"
@@ -186,7 +186,7 @@ export function WaitlistFilters({ onFilterChange }: WaitlistFiltersProps) {
       {/* Service Offering */}
       <div className="text-[#324054]">
         <label className="font-bold">Service Offering</label>
-        <div className="space-y-2 mt-3">
+        <div className="space-y-3 mt-3">
           <Checkbox
             id="housekeeping"
             label="Housekeeping"
@@ -214,8 +214,8 @@ export function WaitlistFilters({ onFilterChange }: WaitlistFiltersProps) {
 
       {/* Filter Button */}
       <div className="w-full pt-5 flex justify-center">
-        <Button onClick={handleReset} className="bg-[#1A78F2] rounded-full">
-          Reset Filters
+        <Button onClick={handleReset} className="bg-[#1A78F2] rounded-full shadow-xl cursor-pointer">
+          Filters
         </Button>
       </div>
     </div>
