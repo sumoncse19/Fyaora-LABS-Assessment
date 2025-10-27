@@ -34,3 +34,34 @@ export async function getAllWaitlistData() {
     customers: waitlistData.customers as ServiceProvider[],
   };
 }
+
+/**
+ * Simulates an API call to update user status
+ * In production, this would be: fetch('/api/waitlist/update-status', { method: 'PUT', body: ... })
+ */
+export async function updateUserStatus(
+  userId: string,
+  newStatus: "onboarded" | "rejected" | "pending"
+): Promise<ServiceProvider> {
+  // Simulate network delay
+  await new Promise((resolve) => setTimeout(resolve, 500));
+
+  // In production, this would update the database
+  // For now, we'll just simulate the response
+  const allUsers = [
+    ...waitlistData.serviceProviders,
+    ...waitlistData.customers,
+  ] as ServiceProvider[];
+
+  const user = allUsers.find((u) => u.id === userId);
+
+  if (!user) {
+    throw new Error("User not found");
+  }
+
+  // Return the updated user
+  return {
+    ...user,
+    status: newStatus,
+  };
+}

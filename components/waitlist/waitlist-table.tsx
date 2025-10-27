@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Table,
   TableBody,
@@ -12,7 +12,8 @@ import {
 import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
 import { ServiceProvider } from "@/types";
-import { Pencil } from "lucide-react";
+import { Button } from "../ui/button";
+import { UserDetailsModal } from "./user-details-modal";
 
 interface WaitlistTableProps {
   data: ServiceProvider[];
@@ -21,9 +22,19 @@ interface WaitlistTableProps {
 export function WaitlistTable({ data }: WaitlistTableProps) {
   const [selectedRows, setSelectedRows] = useState<Set<string>>(new Set());
   const [currentPage, setCurrentPage] = useState(1);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedUser, setSelectedUser] = useState<ServiceProvider | null>(
+    null
+  );
+  const [tableData, setTableData] = useState<ServiceProvider[]>(data);
   const itemsPerPage = 10;
 
-  const totalPages = Math.ceil(data.length / itemsPerPage);
+  // Sync tableData with data prop changes
+  useEffect(() => {
+    setTableData(data);
+  }, [data]);
+
+  const totalPages = Math.ceil(tableData.length / itemsPerPage);
 
   // Ensure current page is valid - if it exceeds total pages, use page 1
   const activePage =
@@ -31,7 +42,7 @@ export function WaitlistTable({ data }: WaitlistTableProps) {
 
   const startIndex = (activePage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
-  const currentData = data.slice(startIndex, endIndex);
+  const currentData = tableData.slice(startIndex, endIndex);
 
   const toggleRow = (id: string) => {
     const newSelected = new Set(selectedRows);
@@ -71,6 +82,25 @@ export function WaitlistTable({ data }: WaitlistTableProps) {
 
   const formatVendorType = (type: string) => {
     return type.charAt(0).toUpperCase() + type.slice(1);
+  };
+
+  const handleUpdateStatus = (user: ServiceProvider) => {
+    setSelectedUser(user);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setSelectedUser(null);
+  };
+
+  const handleStatusUpdate = (updatedUser: ServiceProvider) => {
+    // Update the user in the table data
+    setTableData((prevData) =>
+      prevData.map((user) => (user.id === updatedUser.id ? updatedUser : user))
+    );
+
+    console.log("User status updated:", updatedUser);
   };
 
   return (
@@ -138,7 +168,12 @@ export function WaitlistTable({ data }: WaitlistTableProps) {
                   <TableCell>{item.signupDate}</TableCell>
                   <TableCell>{getStatusBadge(item.status)}</TableCell>
                   <TableCell className="text-center">
-                    <button className="text-gray-600 hover:text-gray-900">
+                    <Button
+                      variant={"ghost"}
+                      size="icon"
+                      className="cursor-pointer"
+                      onClick={() => handleUpdateStatus(item)}
+                    >
                       <svg
                         width="18"
                         height="18"
@@ -151,7 +186,7 @@ export function WaitlistTable({ data }: WaitlistTableProps) {
                           fill="#1C1B1F"
                         />
                       </svg>
-                    </button>
+                    </Button>
                   </TableCell>
                 </TableRow>
               ))}
@@ -205,6 +240,14 @@ export function WaitlistTable({ data }: WaitlistTableProps) {
           &gt;
         </button>
       </div>
+
+      {/* User Details Modal */}
+      <UserDetailsModal
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+        user={selectedUser}
+        onStatusUpdate={handleStatusUpdate}
+      />
     </>
   );
 }

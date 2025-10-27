@@ -43,6 +43,7 @@ export type ServiceOffering = "housekeeping" | "window-cleaning" | "car-valet";
 
 export interface ServiceProvider {
   id: string;
+  name: string;
   email: string;
   phoneNumber: string;
   postcode: string;
