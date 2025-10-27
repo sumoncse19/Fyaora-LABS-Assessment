@@ -144,29 +144,48 @@ export function WaitlistTable({ data }: WaitlistTableProps) {
 
       {/* Pagination */}
       <div className="flex items-center justify-center gap-2 p-4 border-t">
-        {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-          <button
-            key={page}
-            onClick={() => setCurrentPage(page)}
-            className={`w-8 h-8 rounded ${
-              currentPage === page
-                ? "bg-blue-600 text-white"
-                : "bg-white border hover:bg-gray-50"
-            }`}
-          >
-            {page}
-          </button>
-        ))}
-        {totalPages > 5 && (
-          <button
-            onClick={() =>
-              setCurrentPage(Math.min(currentPage + 1, totalPages))
-            }
-            className="w-8 h-8 rounded bg-white border hover:bg-gray-50"
-          >
-            &gt;
-          </button>
-        )}
+        <button
+          onClick={() => setCurrentPage(Math.max(currentPage - 1, 1))}
+          disabled={currentPage === 1}
+          className="w-8 h-8 rounded bg-white border hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          &lt;
+        </button>
+
+        {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
+          let pageNumber;
+          if (totalPages <= 5) {
+            pageNumber = i + 1;
+          } else if (currentPage <= 3) {
+            pageNumber = i + 1;
+          } else if (currentPage >= totalPages - 2) {
+            pageNumber = totalPages - 4 + i;
+          } else {
+            pageNumber = currentPage - 2 + i;
+          }
+
+          return (
+            <button
+              key={pageNumber}
+              onClick={() => setCurrentPage(pageNumber)}
+              className={`w-8 h-8 rounded ${
+                currentPage === pageNumber
+                  ? "bg-blue-600 text-white"
+                  : "bg-white border hover:bg-gray-50"
+              }`}
+            >
+              {pageNumber}
+            </button>
+          );
+        })}
+
+        <button
+          onClick={() => setCurrentPage(Math.min(currentPage + 1, totalPages))}
+          disabled={currentPage === totalPages}
+          className="w-8 h-8 rounded bg-white border hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          &gt;
+        </button>
       </div>
     </div>
   );
