@@ -127,10 +127,10 @@ export default function HumanResourcesPage() {
           <div className="flex items-center gap-4">
             <button
               onClick={() => setActiveTab("providers")}
-              className={`px-4 py-2 rounded-lg font-medium transition-colors cursor-pointer ${
+              className={`px-4 py-2 rounded-lg font-medium transition-colors cursor-pointer border ${
                 activeTab === "providers"
-                  ? "bg-gray-200 text-gray-900"
-                  : "bg-white text-gray-600 hover:bg-gray-100"
+                  ? "bg-[#C8D5D9] text-[#4E4636] border-transparent"
+                  : "text-[#4E4636] border-[#807664]"
               }`}
             >
               Service Providers
@@ -138,10 +138,10 @@ export default function HumanResourcesPage() {
 
             <button
               onClick={() => setActiveTab("customers")}
-              className={`px-4 py-2 rounded-lg font-medium transition-colors cursor-pointer ${
+              className={`px-4 py-2 rounded-lg font-medium transition-colors cursor-pointer border ${
                 activeTab === "customers"
-                  ? "bg-gray-200 text-gray-900"
-                  : "bg-white text-gray-600 hover:bg-gray-100"
+                  ? "bg-[#C8D5D9] text-[#4E4636] border-transparent"
+                  : "text-[#4E4636] border-[#807664]"
               }`}
             >
               Customers
