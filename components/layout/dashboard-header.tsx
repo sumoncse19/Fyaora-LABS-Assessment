@@ -4,7 +4,7 @@ import { Button } from "../ui/button";
 
 export function DashboardHeader() {
   return (
-    <div className="flex items-center justify-end gap-4 pl-6 py-3">
+    <div className="flex items-center justify-end gap-4 pl-6 py-2">
       <Button
         variant="ghost"
         className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
@@ -42,20 +42,18 @@ export function DashboardHeader() {
         </svg>
       </Button>
       <div className="flex items-center gap-3">
-        <div className="w-10 h-10 rounded-full bg-gray-200 overflow-hidden relative">
+        <div className="size-8 rounded-full bg-gray-200 overflow-hidden relative">
           <Image
             src={CURRENT_USER.avatar}
             alt={CURRENT_USER.name}
-            width={40}
-            height={40}
+            width={32}
+            height={32}
             className="object-cover"
           />
         </div>
-        <div className="text-right">
-          <div className="text-sm font-medium text-gray-900">
-            {CURRENT_USER.name}
-          </div>
-          <div className="text-xs text-gray-500">{CURRENT_USER.location}</div>
+        <div className="text-xs">
+          <div className="text-[#324054]">{CURRENT_USER.name}</div>
+          <div className="text-[#4F6071]">{CURRENT_USER.location}</div>
         </div>
       </div>
     </div>

@@ -6,8 +6,8 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
   return (
     <div className="min-h-screen">
       {/* Dashboard Header with Navigation */}
-      <header className="border-b bg-[#F4F7F9] sticky top-0 z-50">
-        <div className="flex items-center justify-between container mx-auto px-6">
+      <header className="border-b bg-[#F4F7F9] sticky top-0 z-50 h-14">
+        <div className="flex items-center justify-between container mx-auto px-6 h-full">
           <DashboardNav />
           <DashboardHeader />
         </div>

@@ -17,12 +17,10 @@ export function DashboardNav() {
           <Link
             key={tab.id}
             href={tab.href}
-            className={`text-sm font-medium pb-3 -mb-px transition-colors ${
+            className={`text-sm font-medium px-3 py-2.5 transition-colors ${
               isActive
-                ? "text-gray-900 border-b-2 border-blue-600"
-                : isHRTab
-                ? "text-blue-600 hover:text-blue-700"
-                : "text-gray-600 hover:text-gray-900"
+                ? "text-[#1A78F2]"
+                : "text-[#313030]"
             }`}
           >
             {tab.label}
