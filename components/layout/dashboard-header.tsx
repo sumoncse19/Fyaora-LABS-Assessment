@@ -52,8 +52,8 @@ export function DashboardHeader() {
           />
         </div>
         <div className="text-xs">
-          <div className="text-[#324054]">{CURRENT_USER.name}</div>
-          <div className="text-[#4F6071]">{CURRENT_USER.location}</div>
+          <div className="text-[#324054] whitespace-nowrap">{CURRENT_USER.name}</div>
+          <div className="text-[#4F6071] whitespace-nowrap">{CURRENT_USER.location}</div>
         </div>
       </div>
     </div>

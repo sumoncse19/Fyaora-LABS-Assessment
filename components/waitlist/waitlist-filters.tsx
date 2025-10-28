@@ -88,7 +88,7 @@ export function WaitlistFilters({ onFilterChange }: WaitlistFiltersProps) {
   };
 
   return (
-    <div className="bg-[#F4F7F9] p-6 rounded-lg space-y-[46px] h-fit sticky top-6">
+    <div className="bg-[#F4F7F9] p-6 rounded-lg space-y-[46px] max-h-screen xl:max-h-full overflow-auto h-fit sticky top-6">
       {/* Gler logo */}
       <Image
         src="/gler.svg"
@@ -214,8 +214,11 @@ export function WaitlistFilters({ onFilterChange }: WaitlistFiltersProps) {
 
       {/* Filter Button */}
       <div className="w-full pt-5 flex justify-center">
-        <Button onClick={handleReset} className="bg-[#1A78F2] rounded-full shadow-xl cursor-pointer">
-          Filters
+        <Button
+          onClick={handleReset}
+          className="bg-[#1A78F2] rounded-full shadow-xl cursor-pointer"
+        >
+          Reset Filters
         </Button>
       </div>
     </div>

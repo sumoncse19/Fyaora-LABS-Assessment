@@ -1,10 +1,11 @@
 "use client";
 
 import { useState, useMemo, useEffect } from "react";
-import { Search } from "lucide-react";
+import { Search, Filter, X } from "lucide-react";
 import { WaitlistFilters } from "@/components/waitlist/waitlist-filters";
 import { WaitlistTable } from "@/components/waitlist/waitlist-table";
 import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import { ServiceProvider, FilterOptions } from "@/types";
 import { getAllWaitlistData } from "@/lib/api/waitlist";
 
@@ -23,6 +24,7 @@ export default function HumanResourcesPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [providersData, setProvidersData] = useState<ServiceProvider[]>([]);
   const [customersData, setCustomersData] = useState<ServiceProvider[]>([]);
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
 
   // Fetch data on component mount (simulating API call)
   useEffect(() => {
@@ -114,38 +116,75 @@ export default function HumanResourcesPage() {
   return (
     <div>
       {/* Layout: Sidebar + Content */}
-      <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 xl:grid-cols-4 gap-6">
         {/* Left Sidebar - Filters */}
-        <div className="lg:col-span-1">
-          <WaitlistFilters onFilterChange={setFilters} />
+        {/* Mobile/Tablet: Absolute positioned overlay, XL+: Normal grid column */}
+        <div
+          className={`
+            fixed xl:relative inset-0 xl:inset-auto z-50 xl:z-auto
+            xl:col-span-1
+            ${isFilterOpen ? "block" : "hidden xl:block"}
+          `}
+        >
+          {/* Backdrop for mobile */}
+          <div
+            className="absolute inset-0 bg-black/50 xl:hidden"
+            onClick={() => setIsFilterOpen(false)}
+          />
+
+          {/* Filter Panel */}
+          <div className="absolute left-0 top-0 bottom-0 w-80 xl:w-full xl:relative">
+            {/* Close button for mobile */}
+            <Button
+              variant="ghost"
+              size="icon"
+              className="absolute top-4 right-4 z-10 xl:hidden"
+              onClick={() => setIsFilterOpen(false)}
+            >
+              <X className="h-5 w-5" />
+            </Button>
+
+            <WaitlistFilters onFilterChange={setFilters} />
+          </div>
         </div>
 
         {/* Right Content - Table */}
-        <div className="lg:col-span-3 space-y-6">
+        <div className="xl:col-span-3 space-y-6">
           <h3 className="text-[#12153A] text-4xl">Waitlist</h3>
           {/* Tabs */}
-          <div className="flex items-center gap-4">
-            <button
+          <div className="flex items-center gap-4 flex-wrap text-sm">
+            {/* Filter Toggle Button - Only visible on mobile/tablet */}
+            <Button
+              variant="outline"
+              className="xl:hidden flex items-center gap-2 h-8"
+              onClick={() => setIsFilterOpen(true)}
+            >
+              <Filter className="h-4 w-4" />
+              Filters
+            </Button>
+
+            <Button
               onClick={() => setActiveTab("providers")}
-              className={`px-4 py-2 rounded-lg font-medium transition-colors cursor-pointer border ${
+              className={`px-2 h-8 rounded-lg font-medium transition-colors cursor-pointer border ${
                 activeTab === "providers"
                   ? "bg-[#C8D5D9] text-[#4E4636] border-transparent"
                   : "text-[#4E4636] border-[#807664]"
               }`}
             >
               Service Providers
-            </button>
+            </Button>
 
-            <button
+            <Button
               onClick={() => setActiveTab("customers")}
-              className={`px-4 py-2 rounded-lg font-medium transition-colors cursor-pointer border ${
+              variant={"ghost"}
+              className={`px-2 h-8 rounded-lg font-medium transition-colors cursor-pointer border ${
                 activeTab === "customers"
                   ? "bg-[#C8D5D9] text-[#4E4636] border-transparent"
                   : "text-[#4E4636] border-[#807664]"
               }`}
             >
               Customers
-            </button>
+            </Button>
 
             {/* Search Bar */}
             <div className="ml-auto flex-1 max-w-[264px]">
