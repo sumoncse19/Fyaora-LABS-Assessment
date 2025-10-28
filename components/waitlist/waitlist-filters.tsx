@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { FilterOptions } from "@/types";
 import Image from "next/image";
 import { DatePicker } from "../ui/date-picker";
+import { toast } from "sonner";
 
 interface WaitlistFiltersProps {
   onFilterChange: (filters: FilterOptions) => void;
@@ -21,6 +22,8 @@ export function WaitlistFilters({ onFilterChange }: WaitlistFiltersProps) {
     serviceOffering: [],
   });
 
+  const [isFiltersApplied, setIsFiltersApplied] = useState(false);
+
   const handleStatusChange = (status: string, checked: boolean) => {
     const newStatuses = checked
       ? [
@@ -29,9 +32,7 @@ export function WaitlistFilters({ onFilterChange }: WaitlistFiltersProps) {
         ]
       : filters.registrationStatus.filter((s) => s !== status);
 
-    const newFilters = { ...filters, registrationStatus: newStatuses };
-    setFilters(newFilters);
-    onFilterChange(newFilters);
+    setFilters({ ...filters, registrationStatus: newStatuses });
   };
 
   const handleVendorTypeChange = (type: string, checked: boolean) => {
@@ -39,9 +40,7 @@ export function WaitlistFilters({ onFilterChange }: WaitlistFiltersProps) {
       ? [...filters.vendorType, type as "independent" | "company"]
       : filters.vendorType.filter((t) => t !== type);
 
-    const newFilters = { ...filters, vendorType: newTypes };
-    setFilters(newFilters);
-    onFilterChange(newFilters);
+    setFilters({ ...filters, vendorType: newTypes });
   };
 
   const handleServiceChange = (service: string, checked: boolean) => {
@@ -52,30 +51,48 @@ export function WaitlistFilters({ onFilterChange }: WaitlistFiltersProps) {
         ]
       : filters.serviceOffering.filter((s) => s !== service);
 
-    const newFilters = { ...filters, serviceOffering: newServices };
-    setFilters(newFilters);
-    onFilterChange(newFilters);
+    setFilters({ ...filters, serviceOffering: newServices });
   };
 
   const handlePostcodeChange = (value: string) => {
-    const newFilters = { ...filters, postcode: value };
-    setFilters(newFilters);
-    onFilterChange(newFilters);
+    setFilters({ ...filters, postcode: value });
   };
 
   const handleDateChange = (type: "start" | "end", date: Date | undefined) => {
-    const newFilters = {
+    setFilters({
       ...filters,
       dateRange: {
         ...filters.dateRange,
         [type]: date ? date.toISOString().split("T")[0] : "",
       },
-    };
-    setFilters(newFilters);
-    onFilterChange(newFilters);
+    });
   };
 
-  const handleReset = () => {
+  const handleApplyFilters = () => {
+    onFilterChange(filters);
+    setIsFiltersApplied(true);
+
+    // Count active filters
+    const activeFiltersCount = [
+      filters.postcode !== "",
+      filters.registrationStatus.length > 0,
+      filters.dateRange.start !== "" || filters.dateRange.end !== "",
+      filters.vendorType.length > 0,
+      filters.serviceOffering.length > 0,
+    ].filter(Boolean).length;
+
+    if (activeFiltersCount > 0) {
+      toast.success(
+        `Filters applied successfully! ${activeFiltersCount} filter${
+          activeFiltersCount > 1 ? "s" : ""
+        } active.`
+      );
+    } else {
+      toast.info("No filters selected. Showing all results.");
+    }
+  };
+
+  const handleClearFilters = () => {
     const resetFilters: FilterOptions = {
       postcode: "",
       registrationStatus: [],
@@ -85,6 +102,8 @@ export function WaitlistFilters({ onFilterChange }: WaitlistFiltersProps) {
     };
     setFilters(resetFilters);
     onFilterChange(resetFilters);
+    setIsFiltersApplied(false);
+    toast.success("All filters cleared successfully!");
   };
 
   return (
@@ -213,13 +232,22 @@ export function WaitlistFilters({ onFilterChange }: WaitlistFiltersProps) {
       </div>
 
       {/* Filter Button */}
-      <div className="w-full pt-5 flex justify-center">
+      <div className="w-full pt-5 flex flex-wrap gap-2 justify-center">
         <Button
-          onClick={handleReset}
+          onClick={handleApplyFilters}
           className="bg-[#1A78F2] rounded-full shadow-xl cursor-pointer"
         >
-          Reset Filters
+          Apply Filters
         </Button>
+
+        {isFiltersApplied && (
+          <Button
+            onClick={handleClearFilters}
+            className="bg-[#1A78F2] rounded-full shadow-xl cursor-pointer"
+          >
+            Clear Filters
+          </Button>
+        )}
       </div>
     </div>
   );

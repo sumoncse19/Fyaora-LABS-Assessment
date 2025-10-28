@@ -164,6 +164,7 @@ export default function HumanResourcesPage() {
             </Button>
 
             <Button
+              variant={"ghost"}
               onClick={() => setActiveTab("providers")}
               className={`px-2 h-8 rounded-lg font-medium transition-colors cursor-pointer border ${
                 activeTab === "providers"
@@ -175,8 +176,8 @@ export default function HumanResourcesPage() {
             </Button>
 
             <Button
-              onClick={() => setActiveTab("customers")}
               variant={"ghost"}
+              onClick={() => setActiveTab("customers")}
               className={`px-2 h-8 rounded-lg font-medium transition-colors cursor-pointer border ${
                 activeTab === "customers"
                   ? "bg-[#C8D5D9] text-[#4E4636] border-transparent"
