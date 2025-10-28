@@ -11,7 +11,7 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: "Dashboard - Gler",
+  title: "Gler | Dashboard",
   description: "Dashboard with multiple tabs",
 };
 
