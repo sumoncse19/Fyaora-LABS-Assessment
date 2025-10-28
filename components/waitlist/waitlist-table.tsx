@@ -14,10 +14,21 @@ import { Badge } from "@/components/ui/badge";
 import { ServiceProvider } from "@/types";
 import { Button } from "../ui/button";
 import { UserDetailsModal } from "./user-details-modal";
+import { ArrowUpDown, ArrowUp, ArrowDown } from "lucide-react";
 
 interface WaitlistTableProps {
   data: ServiceProvider[];
 }
+
+type SortField =
+  | "email"
+  | "phoneNumber"
+  | "postcode"
+  | "vendorType"
+  | "serviceOffering"
+  | "signupDate"
+  | "status";
+type SortDirection = "asc" | "desc" | null;
 
 export function WaitlistTable({ data }: WaitlistTableProps) {
   const [selectedRows, setSelectedRows] = useState<Set<string>>(new Set());
@@ -27,12 +38,73 @@ export function WaitlistTable({ data }: WaitlistTableProps) {
     null
   );
   const [tableData, setTableData] = useState<ServiceProvider[]>(data);
+  const [sortField, setSortField] = useState<SortField | null>(null);
+  const [sortDirection, setSortDirection] = useState<SortDirection>(null);
   const itemsPerPage = 10;
 
   // Sync tableData with data prop changes
   useEffect(() => {
     setTableData(data);
   }, [data]);
+
+  // Apply sorting to tableData
+  useEffect(() => {
+    if (sortField && sortDirection) {
+      const sorted = [...tableData].sort((a, b) => {
+        const aValue = a[sortField];
+        const bValue = b[sortField];
+
+        // Handle date sorting
+        if (sortField === "signupDate") {
+          const aDate = new Date(aValue.split("/").reverse().join("-"));
+          const bDate = new Date(bValue.split("/").reverse().join("-"));
+          return sortDirection === "asc"
+            ? aDate.getTime() - bDate.getTime()
+            : bDate.getTime() - aDate.getTime();
+        }
+
+        // Handle string sorting
+        if (typeof aValue === "string" && typeof bValue === "string") {
+          return sortDirection === "asc"
+            ? aValue.localeCompare(bValue)
+            : bValue.localeCompare(aValue);
+        }
+
+        return 0;
+      });
+      setTableData(sorted);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [sortField, sortDirection]);
+
+  const handleSort = (field: SortField) => {
+    if (sortField === field) {
+      // Toggle between asc -> desc -> null
+      if (sortDirection === "asc") {
+        setSortDirection("desc");
+      } else if (sortDirection === "desc") {
+        setSortDirection(null);
+        setSortField(null);
+        setTableData(data); // Reset to original data
+      }
+    } else {
+      setSortField(field);
+      setSortDirection("asc");
+    }
+  };
+
+  const getSortIcon = (field: SortField) => {
+    if (sortField !== field) {
+      return <ArrowUpDown className="ml-2 h-4 w-4" />;
+    }
+    if (sortDirection === "asc") {
+      return <ArrowUp className="ml-2 h-4 w-4" />;
+    }
+    if (sortDirection === "desc") {
+      return <ArrowDown className="ml-2 h-4 w-4" />;
+    }
+    return <ArrowUpDown className="ml-2 h-4 w-4" />;
+  };
 
   const totalPages = Math.ceil(tableData.length / itemsPerPage);
 
@@ -120,25 +192,74 @@ export function WaitlistTable({ data }: WaitlistTableProps) {
                   />
                 </TableHead>
                 <TableHead className="text-[#2B3641] font-bold whitespace-nowrap">
-                  Email
+                  <Button
+                    variant="ghost"
+                    onClick={() => handleSort("email")}
+                    className="h-auto p-0 hover:bg-transparent font-bold text-[#2B3641]"
+                  >
+                    Email
+                    {getSortIcon("email")}
+                  </Button>
                 </TableHead>
                 <TableHead className="text-[#2B3641] font-bold whitespace-nowrap">
-                  Phone Number
+                  <Button
+                    variant="ghost"
+                    onClick={() => handleSort("phoneNumber")}
+                    className="h-auto p-0 hover:bg-transparent font-bold text-[#2B3641]"
+                  >
+                    Phone Number
+                    {getSortIcon("phoneNumber")}
+                  </Button>
                 </TableHead>
                 <TableHead className="text-[#2B3641] font-bold whitespace-nowrap">
-                  Postcode
+                  <Button
+                    variant="ghost"
+                    onClick={() => handleSort("postcode")}
+                    className="h-auto p-0 hover:bg-transparent font-bold text-[#2B3641]"
+                  >
+                    Postcode
+                    {getSortIcon("postcode")}
+                  </Button>
                 </TableHead>
                 <TableHead className="text-[#2B3641] font-bold whitespace-nowrap">
-                  Vendor Type
+                  <Button
+                    variant="ghost"
+                    onClick={() => handleSort("vendorType")}
+                    className="h-auto p-0 hover:bg-transparent font-bold text-[#2B3641]"
+                  >
+                    Vendor Type
+                    {getSortIcon("vendorType")}
+                  </Button>
                 </TableHead>
                 <TableHead className="text-[#2B3641] font-bold whitespace-nowrap">
-                  Service Offering
+                  <Button
+                    variant="ghost"
+                    onClick={() => handleSort("serviceOffering")}
+                    className="h-auto p-0 hover:bg-transparent font-bold text-[#2B3641]"
+                  >
+                    Service Offering
+                    {getSortIcon("serviceOffering")}
+                  </Button>
                 </TableHead>
                 <TableHead className="text-[#2B3641] font-bold whitespace-nowrap">
-                  Signup Date
+                  <Button
+                    variant="ghost"
+                    onClick={() => handleSort("signupDate")}
+                    className="h-auto p-0 hover:bg-transparent font-bold text-[#2B3641]"
+                  >
+                    Signup Date
+                    {getSortIcon("signupDate")}
+                  </Button>
                 </TableHead>
                 <TableHead className="text-[#2B3641] font-bold whitespace-nowrap">
-                  Status
+                  <Button
+                    variant="ghost"
+                    onClick={() => handleSort("status")}
+                    className="h-auto p-0 hover:bg-transparent font-bold text-[#2B3641]"
+                  >
+                    Status
+                    {getSortIcon("status")}
+                  </Button>
                 </TableHead>
                 <TableHead className="w-12 text-[#2B3641] font-bold whitespace-nowrap">
                   Actions
