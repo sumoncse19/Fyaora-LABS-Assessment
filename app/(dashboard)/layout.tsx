@@ -47,7 +47,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
           expandNav ? "h-auto" : "h-14 lg:h-auto"
         } overflow-hidden lg:overflow-visible`}
       >
-        <div className="container mx-auto px-6">
+        <div className="w-full xl:container mx-auto px-6">
           {/* Mobile: Hamburger and Header */}
           <div className="flex lg:hidden items-center justify-between h-14">
             <Button
@@ -76,7 +76,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
           </div>
 
           {/* Desktop: Normal Layout */}
-          <div className="hidden lg:flex lg:flex-row items-center justify-between py-4">
+          <div className="hidden lg:flex lg:flex-row items-center justify-between h-14">
             <DashboardNav />
             <DashboardHeader />
           </div>
@@ -84,7 +84,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
       </header>
 
       {/* Main Content */}
-      <main className="container mx-auto px-6 pt-20 lg:pt-12 pb-12">
+      <main className="w-full xl:container mx-auto px-6 pt-20 lg:pt-12 pb-12">
         {children}
       </main>
     </div>

@@ -118,22 +118,34 @@ export default function HumanResourcesPage() {
       {/* Layout: Sidebar + Content */}
       <div className="grid grid-cols-1 xl:grid-cols-4 gap-6">
         {/* Left Sidebar - Filters */}
-        {/* Mobile/Tablet: Absolute positioned overlay, XL+: Normal grid column */}
+        {/* Mobile/Tablet: Slide-in overlay, XL+: Normal grid column */}
         <div
           className={`
             fixed xl:relative inset-0 xl:inset-auto z-50 xl:z-auto
             xl:col-span-1
-            ${isFilterOpen ? "block" : "hidden xl:block"}
+            ${
+              isFilterOpen
+                ? "pointer-events-auto"
+                : "pointer-events-none xl:pointer-events-auto"
+            }
           `}
         >
           {/* Backdrop for mobile */}
           <div
-            className="absolute inset-0 bg-black/50 xl:hidden"
+            className={`absolute inset-0 bg-black/50 xl:hidden transition-opacity duration-300 ${
+              isFilterOpen ? "opacity-100" : "opacity-0 pointer-events-none"
+            }`}
             onClick={() => setIsFilterOpen(false)}
           />
 
           {/* Filter Panel */}
-          <div className="absolute left-0 top-0 bottom-0 w-80 xl:w-full xl:relative">
+          <div
+            className={`absolute left-0 top-0 bottom-0 w-80 xl:w-full xl:relative transform transition-transform duration-300 ease-in-out ${
+              isFilterOpen
+                ? "translate-x-0"
+                : "-translate-x-full xl:translate-x-0"
+            }`}
+          >
             {/* Close button for mobile */}
             <Button
               variant="ghost"
